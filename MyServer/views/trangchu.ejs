@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <title>Trang chu</title>
+        <script src="jquery.js"></script>
+        <script src="https://khanhsonesp8266miniledservo.herokuapp.com/socket.io/socket.io.js"></script>
+        <!--<script src="/socket.io/socket.io.js"></script>-->
+        <script>
+            var socket = io("https://khanhsonesp8266miniledservo.herokuapp.com");
+            //var socket = io("http://192.168.45.8:5000");
+
+            $(document).ready(function(){
+                socket.on("message", function(data){
+                    alert(data);
+                });
+
+                document.getElementById("redControl").oninput = processColorChanged;
+                document.getElementById("greenControl").oninput = processColorChanged;
+                document.getElementById("blueControl").oninput = processColorChanged;
+                document.getElementById("servoControl").oninput = processColorChanged;
+
+                function processColorChanged()
+                {      
+                    var red = document.getElementById("redControl").value;
+                    var green = document.getElementById("greenControl").value;
+                    var blue = document.getElementById("blueControl").value;
+                    var servoValue = document.getElementById("servoControl").value;
+                    const data = [red, green, blue, servoValue];
+
+                    socket.emit("colorChanged", data);
+                }
+
+            });
+
+            var slider = document.getElementById("myRange");
+
+        </script>
+        <style>
+            #redSlider {
+                position: fixed;
+                top : 45%;
+                left : 10%;
+                transform:translate(-50,-50);
+                color: red;
+                background-color: red;
+                display: flex;
+            }
+
+            #greenSlider {
+                position: fixed;
+                top : 50%;
+                left : 10%;
+                transform:translate(-50,-50);
+                color: green;
+                background-color: green;
+                display: flex;
+                outline-width: 40px;
+                
+            }
+
+            #blueSlider {
+                position: fixed;
+                top : 55%;
+                left : 10%; 
+                transform:translate(-50,-50);
+                color: blue;
+                background-color: blue;
+                display: flex;
+            }
+
+            #servoSlider {
+                position: fixed;
+                top : 40%;
+                left : 10%; 
+                transform:translate(-50,-50);
+                color:aqua;
+                background-color:aqua;
+                display: flex;
+            }
+        </style>
+    </head>
+    <body>
+       <!--<div id="btnOn">led on</div>
+       <div id="btnOff">led off</div>-->
+
+       <div id="redSlider">
+           <input type="range" min="0" max="255" id="redControl">
+       </div>
+       <div id="greenSlider" >
+        <input type="range" min="0" max="255" id="greenControl">
+    </div>
+    <div id="blueSlider" >
+        <input type="range" min="0" max="255" id="blueControl">
+    </div>
+    <div id="servoSlider" >
+        <input type="range" min="0" max="180" id="servoControl">
+    </div>
+    </body>
+</html>
